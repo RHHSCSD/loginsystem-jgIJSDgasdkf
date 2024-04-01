@@ -17,12 +17,14 @@ public class LoginSystem {
         // TODO code application logic here
         
         try{
-            RegistrationSystem r = new RegistrationSystem("src/loginsystem/user.txt");
-//            System.out.println(r.getUsers());
-
+            RegistrationSystem r = new RegistrationSystem();
+            System.out.println(r.getUserNumber());
+            // r.saveUser(new User("Justin","Min","Juwon","123123","justin@gmail.com"));
+            System.out.println(r.isUniqueName("Justin", "Li"));
         }catch(FileNotFoundException e){
             System.out.println("File not found you noob");
         }
+        
         
         
     }

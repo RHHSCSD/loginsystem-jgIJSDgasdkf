@@ -14,13 +14,14 @@ public class User {
     private String userName;
     private String password;
     private String email;
+    private boolean isLogin;
 
-    public User(String[] newUser) {
-        this.firstName = newUser[0];
-        this.lastName = newUser[1];
-        this.userName = newUser[2];
-        this.password = newUser[3];
-        this.email = newUser[4];
+    public User(String firstName, String lastName, String userName, String password, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.userName = userName;
+        this.password = password;
+        this.email = email;
     }
 
     public String getFirstName() {
@@ -63,7 +64,13 @@ public class User {
         this.email = email;
     }
     
-    
+    @Override
+    public String toString(){
+        return"{first name: "+ firstName + 
+        ", last name: "+ lastName + 
+        ", user name: " + userName +
+        ", email : " + email +"}";
+    }
     
     
     
