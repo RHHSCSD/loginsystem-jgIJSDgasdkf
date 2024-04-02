@@ -18,9 +18,12 @@ public class LoginSystem {
         
         try{
             RegistrationSystem r = new RegistrationSystem();
+            r.loadUser();
             System.out.println(r.getUserNumber());
+//            r.saveUser(new User(new String[]{"Daniel","Zhong","AKIHI","123456","daniel@gmail.com"}));
             // r.saveUser(new User("Justin","Min","Juwon","123123","justin@gmail.com"));
             System.out.println(r.isUniqueName("Justin", "Li"));
+            System.out.println(r.getUsers());
         }catch(FileNotFoundException e){
             System.out.println("File not found you noob");
         }

@@ -11,17 +11,20 @@ import java.io.*;
  */
 public class RegistrationSystem {
     private int userNumber;
-    private ArrayList<User> users = new ArrayList<User>();
-    private final String dataBase = "src/loginsystem/user.txt";
-    public RegistrationSystem() throws FileNotFoundException{
+    private ArrayList<User> users = new ArrayList<>();
+    private final String DataBase = "src/loginsystem/user.txt";
+    private final String Delimiter = "\0";
+    
+    
+    public void loadUser() throws FileNotFoundException{
         Scanner sc;
-        File file = new File(dataBase);
+        File file = new File(DataBase);
         
         try{
             sc = new Scanner(file);
             while(sc.hasNextLine()){
-                String[] newLine = sc.nextLine().split(",");                
-                User u = new User(newLine[0],newLine[1],newLine[2],newLine[3],newLine[4]);
+                String[] newLine = sc.nextLine().split(Delimiter);                
+                User u = new User(newLine[0],newLine[1],newLine[2],newLine[3],newLine[4],newLine[5]);
                 users.add(u);
             }
             
@@ -40,16 +43,17 @@ public class RegistrationSystem {
     }
 
     public void saveUser(User user)throws FileNotFoundException{
-        File file = new File(dataBase);
+        File file = new File(DataBase);
+        PrintWriter writer;
         try{
-            PrintWriter writer = new PrintWriter(new FileWriter(file,true));
-            writer.println(user.getFirstName()+","+user.getLastName()+","+user.getUserName()+","+user.getPassword()+","+user.getEmail());
-            users.add(user);
+            writer = new PrintWriter(new FileWriter(file,true));
+            writer.println(user.getFirstName()+Delimiter+user.getLastName()+Delimiter+user.getUserName()+Delimiter+user.getPassword()+Delimiter+user.getEmail()+Delimiter+user.getSalt());
             writer.close();
         }catch(IOException e){
             System.out.println(e + " something is wrong with the textfile");
         }
-
+        
+        this.loadUser();
     }
 
     public boolean isUniqueName(String firstName, String lastName){
@@ -69,6 +73,8 @@ public class RegistrationSystem {
     public ArrayList<User> getUsers() {
         return users;
     }
+    
+
     
     
     
