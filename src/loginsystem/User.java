@@ -4,6 +4,7 @@
  */
 package loginsystem;
 import java.util.*;
+import java.security.*;
 /**
  *
  * @author Daniel Zhong
@@ -23,14 +24,14 @@ public class User {
         this.lastName = lastName;
         this.userName = userName;
         this.salt = generateSalt() ;
-        this.password = password+salt;
+        this.password = encryptPassword(password,salt);
         this.email = email;
     }
     public User(String firstName, String lastName, String userName, String password, String email,String salt) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.userName = userName;
-        this.password = password+salt;        
+        this.password = encryptPassword(password,salt);
         this.email = email;
         this.salt = salt;
     }
@@ -39,7 +40,7 @@ public class User {
         this.lastName = split[1];
         this.userName = split[2];
         this.salt = generateSalt();
-        this.password = split[3]+salt;
+        this.password = encryptPassword(split[3],salt);
         this.email = split[4];
     }
     public static String generateSalt(){
@@ -52,6 +53,26 @@ public class User {
         }
         
         return s;
+    }
+    
+    public static String encryptPassword(String password, String salt){
+        String encryptedPassword="";
+        try{
+            //java helper class to perform encryption
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            //give the helper function the password
+            md.update(password.getBytes());
+            //perform the encryption
+            byte byteData[] = md.digest();
+            for (int i = 0; i < byteData.length; ++i) {
+                encryptedPassword += (Integer.toHexString((byteData[i] & 0xFF) |
+                0x100).substring(1,3));
+            }
+        }catch(NoSuchAlgorithmException e){
+            System.out.println("No such algorithm, " + e);
+        }
+       return encryptedPassword+salt;
+
     }
 
     public String getFirstName() {
@@ -78,6 +99,15 @@ public class User {
         return salt;
     }
 
+    public boolean isIsLogin() {
+        return isLogin;
+    }
+
+    public void setIsLogin(boolean isLogin) {
+        this.isLogin = isLogin;
+    }
+    
+    
 
     
     
@@ -90,6 +120,9 @@ public class User {
         ", email : " + email +"}";
     }
     
+    
+    public static void main(String[]args){
+    }
 
     
 }
