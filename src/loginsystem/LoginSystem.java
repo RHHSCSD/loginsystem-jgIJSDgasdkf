@@ -28,7 +28,7 @@ public class LoginSystem {
             r.login("Juwon","juwon123");
             System.out.println(r.getUsers());
             System.out.println(r.login("jack","123"));
-            System.out.println(r.register("Danny", "Uan", "SlamDunk", "Danny123@hot.mail", "123456", "123456"));
+            System.out.println(r.register("Danny", "Uan", "SlamDunk", "Danny123@hot.mail", "ddav234", "123456"));
 
             
 
