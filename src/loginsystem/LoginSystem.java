@@ -19,13 +19,20 @@ public class LoginSystem {
         try{
             RegistrationSystem r = new RegistrationSystem();
             r.loadUser();
-            System.out.println(r.getUserNumber());
-//            r.saveUser(new User(new String[]{"Daniel","Zhong","AKIHI","123456","daniel@gmail.com"}));
-//             r.saveUser(new User("Justin","Min","Juwon","123123","justin@gmail.com"));
-//            System.out.println(r.isUniqueName("Justin", "Li"));
-//            System.out.println(r.isUser("Juwon"));
-//            System.out.println(r.getUsers());
-            System.out.println(r.login("AKIHI","123456"));
+            User d = new User("Daniel","Zhong","AKIHI","123456","daniel@gmail.com");
+            r.saveUser(d);
+            System.out.println(r.login("AKIHI", "123456"));
+
+            r.register("Just", "Min", "Juwon", "justin@gmail.com", "juwon123", "juwon123");
+            System.out.println(r.getUsers());
+            r.login("Juwon","juwon123");
+            System.out.println(r.getUsers());
+            System.out.println(r.login("jack","123"));
+            System.out.println(r.register("Danny", "Uan", "SlamDunk", "Danny123@hot.mail", "123456", "123456"));
+
+            
+
+
         }catch(FileNotFoundException e){
             System.out.println("File not found you noob");
         }

@@ -31,7 +31,7 @@ public class User {
         this.firstName = firstName;
         this.lastName = lastName;
         this.userName = userName;
-        this.password = encryptPassword(password,salt);
+        this.password = password;
         this.email = email;
         this.salt = salt;
     }
@@ -114,10 +114,12 @@ public class User {
     
     @Override
     public String toString(){
+        String loginStatus = isLogin ? "logged in" : "not logged in";
         return"{first name: "+ firstName + 
         ", last name: "+ lastName + 
         ", user name: " + userName +
-        ", email : " + email +"}";
+        ", email : " + email+
+        ", status: " + loginStatus+"}";
     }
     
     

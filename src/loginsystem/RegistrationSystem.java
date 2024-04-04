@@ -14,15 +14,15 @@ public class RegistrationSystem {
     private int userNumber;
     private ArrayList<User> users = new ArrayList<>();
     private final String DataBase = "user.txt";
+    private final String PasswordVault = "dictbadpass.txt";
+
     private final String Delimiter = "\0";
     
     
     public void loadUser() throws FileNotFoundException{
-        Scanner sc;
         File file = new File(DataBase);
         
-        try{
-            sc = new Scanner(file);
+        try(Scanner sc = new Scanner(file)){
             while(sc.hasNextLine()){
                 String[] newLine = sc.nextLine().split(Delimiter);                
                 if(isUniqueName(newLine[0],newLine[1])){
@@ -48,24 +48,59 @@ public class RegistrationSystem {
             User user = fetchUserInfo(username);
             if(correctPassword(user.getPassword(),user.getSalt(),input)){
                 user.setIsLogin(true);
-                return 1;
-            }else{
                 return 0;
+            }else{
+                return -1;
             }
             
         }else{
-            return -1;
+            return -2;
         }      
     }
-    
+
+    public int register(String firstName, String lastName, String userName, String email, String password, String checkPassword){
+        if(isUniqueName(firstName, lastName)){
+            if(isUnqiueName(userName)){
+                if(!isBadPassword(password)){
+                    if(password.equals(checkPassword)){
+                        try{
+                            saveUser(new User(firstName, lastName, userName, checkPassword, email));
+                        }catch(FileNotFoundException e){
+                            System.out.println("File not found");
+                            return -1;
+                        }
+                        return 0;
+                    }else{
+                        return -2;
+                    }
+                }else{
+                    return -3;
+                }
+            }else{
+                return -4;
+            }
+        }else{
+            return -5;
+        }
+    }
+    public boolean isBadPassword(String password) {
+        try (Scanner scanner = new Scanner(new File(PasswordVault))) {
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                if (line.equals(password)) {
+                    return true; 
+                }
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found");
+        }
+        return false; 
+    }
     public boolean correctPassword(String password, String salt, String input){
         String encryptedPassword="";
         try{
-            //java helper class to perform encryption
             MessageDigest md = MessageDigest.getInstance("SHA-256");
-            //give the helper function the password
             md.update(input.getBytes());
-            //perform the encryption
             byte byteData[] = md.digest();
             for (int i = 0; i < byteData.length; ++i) {
                 encryptedPassword += (Integer.toHexString((byteData[i] & 0xFF) |
@@ -74,15 +109,14 @@ public class RegistrationSystem {
         }catch(NoSuchAlgorithmException e){
             System.out.println("No such algorithm, " + e);
         }
-        return (encryptedPassword+salt).equals(password);
+        encryptedPassword += salt; 
+        return (encryptedPassword).equals(password);
     }
     
     public void saveUser(User user)throws FileNotFoundException{
         File file = new File(DataBase);
-        PrintWriter writer;
         if(isUniqueName(user.getFirstName(),user.getLastName())){
-            try{
-                writer = new PrintWriter(new FileWriter(file,true));
+            try(PrintWriter writer = new PrintWriter(new FileWriter(file,true));){
                 writer.println(user.getFirstName()+Delimiter+user.getLastName()+Delimiter+user.getUserName()+Delimiter+user.getPassword()+Delimiter+user.getEmail()+Delimiter+user.getSalt());
                 writer.close();
             }catch(IOException e){
@@ -111,13 +145,22 @@ public class RegistrationSystem {
         return null;
     }
     public boolean isUniqueName(String firstName, String lastName){
-        boolean isUnique = true;
         for(User user:users){
             if(user.getFirstName().equals(firstName) && user.getLastName().equals(lastName)){
-                isUnique = false;
+                return false;
             }
         }
-        return isUnique;
+        return true;
+    }
+
+    public boolean isUnqiueName(String userName){
+        for(User user: users){
+            if(user.getUserName().equals(userName)){
+                return false;
+            }
+        }
+
+        return true;
     }
     
     public int getUserNumber(){
