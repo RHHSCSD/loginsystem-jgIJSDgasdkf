@@ -76,8 +76,7 @@ public class RegistrationSystem {
      * @return 0 if registration is successful, -1 if file not found, -2 if passwords don't match,
      *         -3 if password is in the bad passwords list, -4 if username is not unique, -5 if name is not unique
      */
-    public int register(String firstName, String lastName, String userName, String email,
-                        String password, String checkPassword) {
+    public int register(String firstName, String lastName, String userName, String email, String password, String checkPassword) {
         if (isUniqueName(firstName, lastName)) {
             if (isUnqiueName(userName)) {
                 if (!isBadPassword(password)) {
