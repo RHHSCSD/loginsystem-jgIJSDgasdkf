@@ -140,6 +140,8 @@ public class LoginPage extends javax.swing.JFrame {
             case 0 -> {
                 finalResultText.setForeground(new java.awt.Color(0,131,38));
                 finalResultText.setText("Successful login! Welcome back " + userName);
+                setVisible(false);
+                SearchPage.main(null);
             }
             case -1 -> {
                 finalResultText.setForeground(Color.red);

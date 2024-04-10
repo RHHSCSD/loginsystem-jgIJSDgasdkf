@@ -109,18 +109,33 @@ public class RegistrationSystem {
      * @return true if the password is bad, false otherwise
      */
     public boolean isBadPassword(String password) {
+        String charRegex = ".*[a-zA-Z].*";
+        String numRegex = ".*\\d.*";
+        String specialCharRegex=".*[^a-zA-Z0-9\\s].*";
         try (Scanner scanner = new Scanner(new File(PasswordVault))) {
+            
+            if(password.length() < 5){
+                return true;
+            }
+            
+            if(!password.matches(charRegex) || !password.matches(numRegex) || !password.matches(specialCharRegex)){
+                return true;
+            }
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
                 if (line.equals(password)) {
                     return true; 
                 }
             }
+            
+            
         } catch (FileNotFoundException e) {
             System.out.println("File not found");
         }
         return false; 
     }
+    
+    
     
     /**
      * Validates if the provided password matches the stored password for a user.

@@ -199,7 +199,7 @@ public class RegisterPage extends javax.swing.JFrame {
         String password = passwordField.getText();
         String confirmPassword = confirmPasswordField.getText();
         int result;
-        if(!firstName.contains(" ") && !lastName.contains(" ") && !userName.contains(" ") && !email.contains("" )&& !password.contains(" ")){
+        if(!firstName.contains(" ") && !lastName.contains(" ") && !userName.contains(" ") && !email.contains(" ")&& !password.contains(" ")){
             result = r.register(firstName,lastName,userName,email,password,confirmPassword);
         }else{
             result = -6;
